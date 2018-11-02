@@ -69,9 +69,25 @@ public class ImageController extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 图片的宽度。
+		
+		
+		response.setHeader("Pragma", "No-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0);
+		response.setContentType("image/jpeg");
+		
+		//生成随机字串
+		String verifyCode = VerifyCodeUtils.generateVerifyCode(4);
+		//存入会话session
+		HttpSession session = request.getSession(true);
+		session.setAttribute("certCode", verifyCode.toLowerCase());
+		//生成图片
+		int w = 95, h = 40;
+		VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode);
+
+		/*// 图片的宽度。
 		int width = 95;
 		// 图片的高度。
 		int height = 40;
@@ -141,7 +157,7 @@ public class ImageController extends HttpServlet {
 		
 		g.dispose();    //释放g所占用的系统资源  
         ImageIO.write(buffImg,"JPEG",resp.getOutputStream()); //输出图片
-	}
+*/	}
 
 	private String randomStr(int n) {
 		String str1 = "ABCDEFGHJKMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz234567890";

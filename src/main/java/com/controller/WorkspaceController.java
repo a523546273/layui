@@ -33,6 +33,12 @@ public class WorkspaceController {
 	@ResponseBody
 	public Map getToLeft(HttpServletRequest request,MenuVO vo){
 		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try {
+			
+		
+		
 		BaseUser baseUser=(BaseUser) request.getSession().getAttribute(SessionConstants.WSSIP_OPERATOR);
 		
 		List<BaseMenu> listAll=menuService.getMenuListByPid(vo.getMenuid(), baseUser.getUserid());
@@ -51,11 +57,16 @@ public class WorkspaceController {
 			}
 		}
 		
-		Map<String, Object> map = new HashMap<String, Object>();
+		
+		
 		
 		map.put("success",true);
 		map.put("secondList",secondList);
 		map.put("thirdList",thirdList);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return map;
 	}
